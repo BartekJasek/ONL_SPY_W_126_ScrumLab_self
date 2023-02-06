@@ -22,5 +22,6 @@ from jedzonko import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', IndexView.as_view()),
-    path('', views.homepage)
+    path('', views.homepage),
+    path('main/', views.dashboard),
 ]
