@@ -10,3 +10,4 @@ class Recipe(models.Model):
     updated = models.DateField(default=datetime.now())
     preparation_time = models.IntegerField()
     votes = models.IntegerField(default=0)
+    counter = models.Count(name)
