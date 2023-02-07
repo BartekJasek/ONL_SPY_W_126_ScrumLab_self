@@ -17,8 +17,16 @@ from django.contrib import admin
 from django.urls import path
 
 from jedzonko.views import IndexView
+from jedzonko import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', IndexView.as_view()),
+    path('', views.homepage),
+    path('main/', views.dashboard),
+    path('receipe/list/', views.receipelist, name='receipes'),
+    path('plan/list/', views.planlist),
+    path('receipe/add/', views.receipeadd),
+    path('plan/add/', views.planadd),
+    path('plan/add-receipe/', views.planaddreceipe)
 ]
