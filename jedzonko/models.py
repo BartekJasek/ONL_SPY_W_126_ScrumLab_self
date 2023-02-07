@@ -16,3 +16,5 @@ class Plan(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
     created = models.DateField(default=datetime.now())
+    votes = models.IntegerField(default=0)
+

@@ -65,3 +65,42 @@ def planaddreceipe(request):
     context = {
     }
     return HttpResponse(template.render(context, request))
+
+
+def dashboard(request):
+    template = loader.get_template('dashboard.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def receipelist(request):
+    template = loader.get_template('test.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+def planlist(request):
+    template = loader.get_template('test.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+def receipeadd(request):
+    template = loader.get_template('test.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+def planadd(request):
+    template = loader.get_template('test.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+def planaddreceipe(request):
+    template = loader.get_template('test.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
