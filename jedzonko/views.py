@@ -5,7 +5,7 @@ from django.views import View
 from django.template import loader
 from django.http import HttpResponse
 
-from jedzonko.models import Recipe
+from jedzonko.models import Recipe, Plan
 
 
 class IndexView(View):
