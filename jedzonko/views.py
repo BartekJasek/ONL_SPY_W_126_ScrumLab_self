@@ -24,10 +24,10 @@ def homepage(request):
 
 
 def dashboard(request):
-    recipenumbers = Plan.objects.count()
+    plannumbers = Plan.objects.count()
     template = loader.get_template('dashboard.html')
     context = {
-        "recipenumbers": recipenumbers
+        "plannumbers": plannumbers
     }
     return HttpResponse(template.render(context, request))
 
