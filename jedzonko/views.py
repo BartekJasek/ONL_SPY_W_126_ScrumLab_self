@@ -5,7 +5,7 @@ from django.views import View
 from django.template import loader
 from django.http import HttpResponse
 
-from jedzonko.models import Recipe
+from jedzonko.models import Recipe, Plan
 
 
 class IndexView(View):
@@ -24,10 +24,12 @@ def homepage(request):
 
 
 def dashboard(request):
-    recipenumbers = Plan.objects.count()
+    recipenumbers = Recipe.objects.count()
+    plannumbers = Plan.objects.count()
+
     template = loader.get_template('dashboard.html')
     context = {
-        "recipenumbers": recipenumbers
+        "plannumbers": plannumbers
     }
     return HttpResponse(template.render(context, request))
 
