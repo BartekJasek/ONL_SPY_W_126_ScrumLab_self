@@ -10,3 +10,11 @@ class Recipe(models.Model):
     updated = models.DateField(default=datetime.now())
     preparation_time = models.IntegerField()
     votes = models.IntegerField(default=0)
+
+
+class Plan(models.Model):
+    name = models.CharField(max_length=128)
+    description = models.TextField()
+    created = models.DateField(default=datetime.now())
+    votes = models.IntegerField(default=0)
+
