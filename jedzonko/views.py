@@ -24,7 +24,9 @@ def homepage(request):
 
 
 def dashboard(request):
+    recipenumbers = Recipe.objects.count()
     plannumbers = Plan.objects.count()
+
     template = loader.get_template('dashboard.html')
     context = {
         "plannumbers": plannumbers
