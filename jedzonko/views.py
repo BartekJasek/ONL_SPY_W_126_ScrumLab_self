@@ -61,9 +61,10 @@ def planaddreceipe(request):
     }
     return HttpResponse(template.render(context, request))
 def carousel(request):
-    recipe = list(Recipe.objects.all())
-    recipe = random.sample(recipe, 1)
-    return render(request, 'index.html', {'recipe': recipe})
+    recipes = Recipe.objects.all()
+    recipes = list(Recipe.objects.all())
+    recipe = random.sample(recipes, 1)
+    return render(request, 'index.html', {'recipes': recipes})
 
 
 
