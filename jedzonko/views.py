@@ -17,11 +17,13 @@ class IndexView(View):
 
 
 def homepage(request):
-    template = loader.get_template('index.html')
-    context = {
-        #'recipe': Recipe.objects.all()
-    }
-    return HttpResponse(template.render(context, request))
+    recipes = Recipe.objects.all()
+    recipes = list(Recipe.objects.all())
+    random.shuffle(recipes)
+    if request.method == 'GET':
+        template = loader.get_template('index.html')
+        context = {'recipes': recipes}
+        return HttpResponse(template.render(context, request))
 
 
 def dashboard(request):
@@ -60,11 +62,12 @@ def planaddreceipe(request):
     context = {
     }
     return HttpResponse(template.render(context, request))
-def carousel(request):
-    recipes = Recipe.objects.all()
-    recipes = list(Recipe.objects.all())
-    recipe = random.sample(recipes, 1)
-    return render(request, 'index.html', {'recipes': recipes})
+
+# def carousel(request):
+#     recipes = Recipe.objects.all()
+#     recipes = list(Recipe.objects.all())
+#     recipe = random.sample(recipes, 1)
+#     return render(request, 'index.html', {'recipes': recipes})
 
 
 
