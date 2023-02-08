@@ -46,7 +46,15 @@ def planlist(request):
 
 
 def receipeadd(request):
-    template = loader.get_template('test.html')
+    template = loader.get_template('app-add-recipe.html')
+
+    if request.method == 'POST':
+        Recipe.objects.create(name=request.POST.get('name'),
+                              ingredients=request.POST.get('ingredients'),
+                              description=request.POST.get('description'),
+                              preparation_time=request.POST.get('preparation_time'))
+
+
     context = {
     }
     return HttpResponse(template.render(context, request))
