@@ -41,15 +41,15 @@ def recipedetails(request, id):
 
 
 def recipelist(request):
-    recipe = Recipe.objects.all().order_by('-votes')
+    # recipe = Recipe.objects.all().order_by('-votes')
     recipes = Recipe.objects.all().order_by('-votes', '-created')
-    p = Paginator(Recipe.objects.all(), 50)
+    p = Paginator(recipes, 50)
     page = request.GET.get('page')
     recipes_list = p.get_page(page)
-
+    nums = "a" * recipes_list.paginator.num_pages
     if request.method == 'GET':
         template = loader.get_template('app-recipes.html')
-        context = {"recipes": recipes, 'recipe': recipe, 'recipes_list': recipes_list}
+        context = {"recipes": recipes, 'recipes_list': recipes_list, 'nums': nums}
         return HttpResponse(template.render(context, request))
 
 
