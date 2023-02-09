@@ -14,12 +14,12 @@ class IndexView(View):
 
 
 def homepage(request):
-    recipes = Recipe.objects.all()
     recipes = list(Recipe.objects.all())
-    random.shuffle(recipes)
+    for i in range(3):
+        random.shuffle(recipes)
     if request.method == 'GET':
         template = loader.get_template('index.html')
-        context = {'recipes': recipes}
+        context = {'recipes': recipes[0:1]}
         return HttpResponse(template.render(context, request))
 
 
