@@ -20,13 +20,16 @@ from jedzonko.views import IndexView
 from jedzonko import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('index/', IndexView.as_view()),
+    # path('admin/', admin.site.urls),
+    # path('index/', IndexView.as_view()),
     path('', views.homepage),
     path('main/', views.dashboard),
-    path('receipe/list/', views.receipelist, name='receipes'),
+    path('recipe/<int:id>/', views.recipedetails),
+    path('recipe/list/', views.recipelist, name='recipes'),
+    path('recipe/add/', views.recipeadd),
+    path('recipe/modify/<int:id>/', views.recipemodify),
     path('plan/list/', views.planlist),
-    path('receipe/add/', views.receipeadd),
+    path('plan/<int:id>', views.plandetails),
     path('plan/add/', views.planadd),
-    path('plan/add-receipe/', views.planaddreceipe)
+    path('plan/add-recipe/', views.planaddrecipe)
 ]
