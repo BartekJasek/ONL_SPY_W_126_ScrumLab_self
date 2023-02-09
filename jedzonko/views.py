@@ -53,13 +53,6 @@ def recipelist(request):
         return HttpResponse(template.render(context, request))
 
 
-def recipeadd(request):
-    template = loader.get_template('app-add-recipe.html')
-    context = {
-    }
-    return HttpResponse(template.render(context, request))
-
-
 def recipemodify(request, id):
     template = loader.get_template('app-edit-recipe.html')
     context = {
@@ -74,8 +67,19 @@ def planlist(request):
     return HttpResponse(template.render(context, request))
 
 
+
 def plandetails(request, id):
     template = loader.get_template('app-details-schedules.html')
+
+
+def recipeadd(request):
+    template = loader.get_template('app-add-recipe.html')
+
+    if request.method == 'POST':
+        Recipe.objects.create(name=request.POST.get('name'),
+                              ingredients=request.POST.get('ingredients'),
+                              description=request.POST.get('description'),
+                              preparation_time=request.POST.get('preparation_time'))
     context = {
     }
     return HttpResponse(template.render(context, request))
