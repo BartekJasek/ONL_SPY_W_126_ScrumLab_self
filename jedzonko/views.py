@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 from django.shortcuts import render
 from django.views import View
@@ -14,10 +15,13 @@ class IndexView(View):
 
 
 def homepage(request):
-    template = loader.get_template('index.html')
-    context = {
-    }
-    return HttpResponse(template.render(context, request))
+    recipes = list(Recipe.objects.all())
+    for i in range(3):
+        random.shuffle(recipes)
+    if request.method == 'GET':
+        template = loader.get_template('index.html')
+        context = {'recipes': recipes[0:1]}
+        return HttpResponse(template.render(context, request))
 
 
 def dashboard(request):
@@ -58,7 +62,7 @@ def recipemodify(request, id):
     context = {
     }
     return HttpResponse(template.render(context, request))
-
+    
 
 def planlist(request):
     template = loader.get_template('app-schedules.html')
@@ -67,14 +71,12 @@ def planlist(request):
     return HttpResponse(template.render(context, request))
 
 
-
 def plandetails(request, id):
     template = loader.get_template('app-details-schedules.html')
 
 
 def recipeadd(request):
     template = loader.get_template('app-add-recipe.html')
-
     if request.method == 'POST':
         Recipe.objects.create(name=request.POST.get('name'),
                               ingredients=request.POST.get('ingredients'),
@@ -97,5 +99,4 @@ def planaddrecipe(request):
     context = {
     }
     return HttpResponse(template.render(context, request))
-
 
