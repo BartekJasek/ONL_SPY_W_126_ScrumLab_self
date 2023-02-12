@@ -1,6 +1,6 @@
 import random
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.template import loader
 from django.http import HttpResponse
@@ -76,14 +76,28 @@ def plandetails(request, id):
 
 
 def recipeadd(request):
+    txt = ''
     template = loader.get_template('app-add-recipe.html')
-    if request.method == 'POST':
-        Recipe.objects.create(name=request.POST.get('name'),
-                              ingredients=request.POST.get('ingredients'),
-                              description=request.POST.get('description'),
-                              preparation_time=request.POST.get('preparation_time'))
     context = {
     }
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        ingredients = request.POST.get('ingredients')
+        description = request.POST.get('description')
+        preparation_time = request.POST.get('preparation_time')
+        if name and ingredients and description and preparation_time:
+            if preparation_time.isdigit:
+                Recipe.objects.create(name=name,
+                                      ingredients=ingredients,
+                                      description=description,
+                                      preparation_time=preparation_time)
+                return redirect(f"/recipe/list/")
+        txt = 'Wypełnij poprawnie wszystkie pola'
+        context = {
+            'txt': txt
+            }
+        return HttpResponse(template.render(context, request))
+
     return HttpResponse(template.render(context, request))
 
 

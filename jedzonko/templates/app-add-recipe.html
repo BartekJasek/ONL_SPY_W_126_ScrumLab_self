@@ -4,6 +4,9 @@
 
 {% block content %}
 
+{% if txt != null %}
+    {{ txt }}
+{% endif %}
 <form method="POST">{% csrf_token %}
 <div class="dashboard-content border-dashed p-3 m-4 view-height">
 
