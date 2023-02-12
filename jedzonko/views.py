@@ -45,7 +45,6 @@ def recipedetails(request, id):
 
 
 def recipelist(request):
-    # recipe = Recipe.objects.all().order_by('-votes')
     recipes = Recipe.objects.all().order_by('-votes', '-created')
     p = Paginator(recipes, 50)
     page = request.GET.get('page')
@@ -65,10 +64,15 @@ def recipemodify(request, id):
     
 
 def planlist(request):
-    template = loader.get_template('app-schedules.html')
-    context = {
-    }
-    return HttpResponse(template.render(context, request))
+    plans = Plan.objects.all().order_by('name')
+    p = Paginator(plans, 50)
+    page = request.GET.get('page')
+    plans_list = p.get_page(page)
+    nums = "a" * plans_list.paginator.num_pages
+    if request.method == 'GET':
+        template = loader.get_template('app-schedules.html')
+        context = {'plans': plans, 'plans_list': plans_list, 'nums': nums}
+        return HttpResponse(template.render(context, request))
 
 
 def plandetails(request, id):

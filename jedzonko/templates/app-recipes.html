@@ -45,15 +45,12 @@
 <hr><br/><br/>
 <nav aria-label="Page navigation example">
 <ul class="pagination">
+
 {% if recipes_list.has_previous %}
-{#    <li class="page-item">#}
-{#        <a class="page-link" href="?page=1">&laquo Pierwsza</a>#}
-{#    </li>#}
     <li class="page-item">
         <a class="page-link" href="?page={{ recipes_list.previous_page_number }}">&laquo Poprzednia</a>
     </li>
 {% endif %}
-
 
 {% for i in nums %}
     <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">
@@ -65,12 +62,9 @@
     <li class="page-item">
         <a class="page-link" href="?page={{ recipes_list.next_page_number }}">Następna &raquo</a>
     </li>
-{#    <li class="page-item">#}
-{#        <a class="page-link" href="?page={{ recipes_list.paginator.num_pages }}">Ostatnia &raquo</a>#}
-{#    </li>#}
 {% endif %}
+
 </ul>
 </nav>
 </div>
-<br/>
 {% endblock content %}
