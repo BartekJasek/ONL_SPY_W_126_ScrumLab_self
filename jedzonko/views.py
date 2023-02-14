@@ -5,7 +5,7 @@ from django.views import View
 from django.template import loader
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from .models import Recipe, Plan
+from .models import Recipe, Plan, RecipePlan
 
 
 class IndexView(View):
@@ -75,7 +75,9 @@ def planlist(request):
 
 def plandetails(request, id):
     template = loader.get_template('app-details-schedules.html')
-
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
 
 def recipeadd(request):
     template = loader.get_template('app-add-recipe.html')
@@ -98,7 +100,21 @@ def planadd(request):
 
 def planaddrecipe(request):
     template = loader.get_template('app-schedules-meal-recipe.html')
+    if request.method == 'POST':
+
+        RecipePlan.objects.create(meal_name=request.POST.get('name'),
+                                  recipe=request.POST.get('recipe'),
+                                  plan=request.POST.get('choosePlan'),
+                                  order=request.POST.get('number'),
+                                  day_name=request.POST.get('day')),
+    elif request.method == 'GET':
+        plans = Plan.objects.all()
+        recipes = Recipe.objects.all()
+        days = RecipePlan.objects.all()
+
     context = {
+        "plans": plans,
+        "recipes": recipes,
+        "days": days
     }
     return HttpResponse(template.render(context, request))
-
