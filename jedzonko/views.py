@@ -106,10 +106,31 @@ def recipeadd(request):
 
 
 def planadd(request):
+    txt = ''
     template = loader.get_template('app-add-schedules.html')
     context = {
     }
+    if request.method == 'GET':
+        return render(
+            request,
+            'app-add-schedules.html',
+            context={}
+        )
+    if request.method == 'POST':
+       name = request.POST.get('name')
+       description = request.POST.get('description')
+       if name and description:
+            Recipe.objects.create(name=name,
+                                  description=description)
+            return redirect(f"/plan/add/")
+       txt = 'Wypełnij wszystkie pola'
+       context = {
+           'txt': txt
+           }
+       return HttpResponse(template.render(context, request))
+
     return HttpResponse(template.render(context, request))
+
 
 
 def planaddrecipe(request):
