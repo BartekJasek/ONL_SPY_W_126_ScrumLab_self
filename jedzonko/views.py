@@ -60,6 +60,7 @@ def recipelist(request):
 
 def recipemodify(request, id):
     template = loader.get_template('app-edit-recipe.html')
+
     context = {
     }
     return HttpResponse(template.render(context, request))
@@ -78,9 +79,10 @@ def planlist(request):
 
 
 def plandetails(request, id):
+    pdetails = Plan.objects.get(id=id)
     template = loader.get_template('app-details-schedules.html')
-    context = {
-    }
+
+    context = {'pdetails': pdetails}
     return HttpResponse(template.render(context, request))
 
 def recipeadd(request):

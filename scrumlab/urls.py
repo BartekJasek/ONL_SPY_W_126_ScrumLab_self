@@ -29,7 +29,7 @@ urlpatterns = [
     path('recipe/add/', views.recipeadd),
     path('recipe/modify/<int:id>/', views.recipemodify),
     path('plan/list/', views.planlist),
-    path('plan/<int:id>', views.plandetails),
+    path('plan/<int:id>/', views.plandetails),
     path('plan/add/', views.planadd),
     path('plan/add-recipe/', views.planaddrecipe)
 ]
