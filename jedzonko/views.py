@@ -27,11 +27,13 @@ def homepage(request):
 def dashboard(request):
     recipenumbers = Recipe.objects.count()
     plannumbers = Plan.objects.count()
+    plan = Plan.objects.latest('created')
 
     template = loader.get_template('dashboard.html')
     context = {
         "plannumbers": plannumbers,
         "recipenumbers": recipenumbers,
+        "plan": plan,
     }
     return HttpResponse(template.render(context, request))
 
@@ -45,7 +47,6 @@ def recipedetails(request, id):
 
 
 def recipelist(request):
-    # recipe = Recipe.objects.all().order_by('-votes')
     recipes = Recipe.objects.all().order_by('-votes', '-created')
     p = Paginator(recipes, 50)
     page = request.GET.get('page')
@@ -59,16 +60,22 @@ def recipelist(request):
 
 def recipemodify(request, id):
     template = loader.get_template('app-edit-recipe.html')
+
     context = {
     }
     return HttpResponse(template.render(context, request))
     
 
 def planlist(request):
-    template = loader.get_template('app-schedules.html')
-    context = {
-    }
-    return HttpResponse(template.render(context, request))
+    plans = Plan.objects.all().order_by('name')
+    p = Paginator(plans, 50)
+    page = request.GET.get('page')
+    plans_list = p.get_page(page)
+    nums = "a" * plans_list.paginator.num_pages
+    if request.method == 'GET':
+        template = loader.get_template('app-schedules.html')
+        context = {'plans': plans, 'plans_list': plans_list, 'nums': nums}
+        return HttpResponse(template.render(context, request))
 
 
 def plandetails(request, id):
@@ -126,15 +133,50 @@ def recipeadd(request):
 
 
 def planadd(request):
+    txt = ''
     template = loader.get_template('app-add-schedules.html')
     context = {
     }
+    if request.method == 'GET':
+        return render(
+            request,
+            'app-add-schedules.html',
+            context={}
+        )
+    if request.method == 'POST':
+       name = request.POST.get('name')
+       description = request.POST.get('description')
+       if name and description:
+            Recipe.objects.create(name=name,
+                                  description=description)
+            return redirect(f"/plan/add/")
+       txt = 'Wypełnij wszystkie pola'
+       context = {
+           'txt': txt
+           }
+       return HttpResponse(template.render(context, request))
+
     return HttpResponse(template.render(context, request))
+
 
 
 def planaddrecipe(request):
     template = loader.get_template('app-schedules-meal-recipe.html')
+    if request.method == 'POST':
+
+        RecipePlan.objects.create(meal_name=request.POST.get('name'),
+                                  recipe=request.POST.get('recipe'),
+                                  plan=request.POST.get('choosePlan'),
+                                  order=request.POST.get('number'),
+                                  day_name=request.POST.get('day')),
+    elif request.method == 'GET':
+        plans = Plan.objects.all()
+        recipes = Recipe.objects.all()
+        days = RecipePlan.objects.all()
+
     context = {
+        "plans": plans,
+        "recipes": recipes,
+        "days": days
     }
     return HttpResponse(template.render(context, request))
-

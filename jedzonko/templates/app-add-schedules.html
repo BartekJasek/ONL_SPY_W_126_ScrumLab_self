@@ -1,5 +1,11 @@
 {% extends "__base__.html" %}
 {% block content %}
+
+
+{% if txt != null %}
+    {{ txt }}
+{% endif %}
+
 <div class="dashboard-content border-dashed p-3 m-4 view-height">
 
     <div class="row border-bottom border-3 p-1 m-1">
@@ -12,7 +18,7 @@
     </div>
 
     <div class="schedules-content">
-        <form>
+        <form method="POST">{% csrf_token %}
             <div class="form-group row">
                 <label for="planName"
                        class="col-sm-2 label-size col-form-label">
@@ -30,7 +36,7 @@
                 </label>
                 <div class="col-sm-10">
                     <textarea class="form-control" rows="5" id="planDescription"
-                              placeholder="Opis plany"></textarea>
+                              placeholder="Opis planu"></textarea>
                 </div>
             </div>
         </form>
