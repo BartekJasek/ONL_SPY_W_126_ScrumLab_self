@@ -30,7 +30,7 @@ class DayName(models.Model):
 
 class RecipePlan(models.Model):
     meal_name = models.CharField(max_length=128)
-    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
-    plan = models.OneToOneField(Plan, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
-    day_name = models.OneToOneField(DayName, on_delete=models.CASCADE)
+    day_name = models.ForeignKey(DayName, on_delete=models.CASCADE)

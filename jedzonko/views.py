@@ -79,11 +79,32 @@ def planlist(request):
 
 
 def plandetails(request, id):
-    pdetails = Plan.objects.get(id=id)
-    template = loader.get_template('app-details-schedules.html')
+    plan_id = int(id)
+    plan = Plan.objects.get(id=plan_id)
+    recipesplan = RecipePlan.objects.filter(plan_id=plan_id).order_by('day_name_id', 'order')
+    days_list = []
+    day_order_dict = {}
 
-    context = {'pdetails': pdetails}
-    return HttpResponse(template.render(context, request))
+    for rp in recipesplan:
+        if rp.day_name not in day_order_dict.keys():
+            days_list.append(rp.day_name)
+            day_order_dict[rp.day_name] = [rp.order]
+        else:
+            if rp.order not in day_order_dict[rp.day_name]:
+                day_order_list = day_order_dict[rp.day_name]
+                day_order_list.append(rp.order)
+                day_order_dict[rp.day_name] = day_order_list
+
+    if request.method == 'GET':
+        template = loader.get_template('app-details-schedules.html')
+        context = {
+            'plan': plan,
+            'recipesplan': recipesplan,
+            'days_list': days_list,
+            'day_order_dict': day_order_dict
+        }
+        return HttpResponse(template.render(context, request))
+
 
 def recipeadd(request):
     txt = ''
