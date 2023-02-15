@@ -5,7 +5,7 @@ from django.views import View
 from django.template import loader
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from .models import Recipe, Plan
+from .models import Recipe, Plan, RecipePlan
 
 
 class IndexView(View):
@@ -27,11 +27,13 @@ def homepage(request):
 def dashboard(request):
     recipenumbers = Recipe.objects.count()
     plannumbers = Plan.objects.count()
+    plan = Plan.objects.latest('created')
 
     template = loader.get_template('dashboard.html')
     context = {
         "plannumbers": plannumbers,
         "recipenumbers": recipenumbers,
+        "plan": plan,
     }
     return HttpResponse(template.render(context, request))
 
@@ -110,15 +112,50 @@ def recipeadd(request):
 
 
 def planadd(request):
+    txt = ''
     template = loader.get_template('app-add-schedules.html')
     context = {
     }
+    if request.method == 'GET':
+        return render(
+            request,
+            'app-add-schedules.html',
+            context={}
+        )
+    if request.method == 'POST':
+       name = request.POST.get('name')
+       description = request.POST.get('description')
+       if name and description:
+            Recipe.objects.create(name=name,
+                                  description=description)
+            return redirect(f"/plan/add/")
+       txt = 'Wypełnij wszystkie pola'
+       context = {
+           'txt': txt
+           }
+       return HttpResponse(template.render(context, request))
+
     return HttpResponse(template.render(context, request))
+
 
 
 def planaddrecipe(request):
     template = loader.get_template('app-schedules-meal-recipe.html')
+    if request.method == 'POST':
+
+        RecipePlan.objects.create(meal_name=request.POST.get('name'),
+                                  recipe=request.POST.get('recipe'),
+                                  plan=request.POST.get('choosePlan'),
+                                  order=request.POST.get('number'),
+                                  day_name=request.POST.get('day')),
+    elif request.method == 'GET':
+        plans = Plan.objects.all()
+        recipes = Recipe.objects.all()
+        days = RecipePlan.objects.all()
+
     context = {
+        "plans": plans,
+        "recipes": recipes,
+        "days": days
     }
     return HttpResponse(template.render(context, request))
-
